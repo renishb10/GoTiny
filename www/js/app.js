@@ -22,3 +22,19 @@ angular.module('starter', ['ionic'])
     }
   });
 })
+
+.config(function($stateProvider, $urlRouterProvider){
+  $stateProvider
+    .state("list",{
+      "url": "/list",
+      "templateUrl": "templates/list.html",
+      "controller": "MainController",
+      "cache": false
+    });
+    
+    $urlRouterProvider.otherwise("list");
+})
+
+.controller("MainController",function($scope,$http){
+  $scope.listItems = ["Item1", "Item2", "Item3", "Item4"]
+})
