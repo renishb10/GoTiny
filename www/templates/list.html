@@ -1,8 +1,20 @@
 <ion-view title="GoTiny">
+    <ion-nav-buttons side="right">
+        <button class="right button button-icon icon ion-plus" ui-sref="create"></button>
+    </ion-nav-buttons>
     <ion-content>
         <ion-list show-delete="false" can-swipe="true">
-          <ion-item ng-repeat="item in listItems">
-            {{item}}
+          <ion-item ng-repeat="(key,value) in urls" ng-click="launchUrl()">
+            <div class="row">
+                <div class="col">
+                    <strong>{{value.shortUrl}}</strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <strong>{{value.longUrl}}</strong>
+                </div>
+            </div>
             <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
           </ion-item>
         </ion-list>

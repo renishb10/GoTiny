@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('starter', ['ionic','ngStorage','ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -30,11 +30,24 @@ angular.module('starter', ['ionic'])
       "templateUrl": "templates/list.html",
       "controller": "MainController",
       "cache": false
+    })
+    .state("create",{
+      "url": "/create",
+      "templateUrl": "templates/create.html",
+      "controller": "MainController",
+      "cache": false
     });
     
     $urlRouterProvider.otherwise("list");
 })
 
-.controller("MainController",function($scope,$http){
+.controller("MainController",function($scope,$http,$localStorage,$cordovaToast){
+  $scope.launchUrl = function(){
+    window.open("http://dartle.net","_system","location=yes");
+  }
+  
+  $scope.showToast = function(){
+    $cordovaToast.show('Here is a message', 'long', 'center');
+  }
   $scope.listItems = ["Item1", "Item2", "Item3", "Item4"]
 })
