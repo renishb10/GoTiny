@@ -41,9 +41,54 @@ angular.module('starter', ['ionic','ngStorage','ngCordova'])
     $urlRouterProvider.otherwise("list");
 })
 
-.controller("MainController",function($scope,$http,$localStorage,$cordovaToast){
-  $scope.launchUrl = function(){
-    window.open("http://dartle.net","_system","location=yes");
+.controller("MainController",function($scope,$http,$localStorage,$ionicHistory,$cordovaToast){
+  
+  $scope.init = function() {
+    $scope.urls = $localStorage.tiny;
+  }
+  
+  $scope.shorten = function(longUrl){
+    $http({
+      method: "GET",
+      url: "http://tinyurl.com/api-create.php",
+      params: {
+        url: longUrl
+      },
+      headers:{
+                'Access-Control-Allow-Origin': '*'
+      }
+    })
+    .success(function(result){
+      if(typeof $localStorage.tiny == "undefined"){
+        $localStorage.tiny = {};
+      }
+      $localStorage.tiny[longUrl] = {
+        longUrl: longUrl,
+        shortUrl: result
+      }
+      $state.go("list");
+    })
+    .error(function(error){
+      console.log(JSON.stringify(error));
+    });
+  }
+  
+  $scope.open = function(url){
+    var urlCheck = new RegExp("^(http|https)://");
+    if(urlCheck){
+      window.open(url,"_system","location=yes");
+    }
+    else{
+      window.open("http://"+url,"_system","location=yes");
+    }
+  }
+  
+  $scope.back = function(){
+    $ionicHistory.goBack();
+  }
+  
+  $scope.delete = function(url){
+    delete $localStorage.tiny[url];
   }
   
   $scope.showToast = function(){
